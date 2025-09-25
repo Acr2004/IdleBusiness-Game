@@ -1,0 +1,44 @@
+JSON Data: BusinessType[]
+
+---------- BusinessType ----------
+id: string;                                 // Business ID
+name: string;                               // Name of the Business Type
+description: string;                        // Description of the Business Type
+category: string;                           // Category of the Business Type
+icon: string;                               // String of the Business Type's Icon
+
+subtypes?: BusinessSubtype[];               // If Business Type hasn't a Subtype it will not exist
+
+                                            // If Business has a Subtype it will not have this stats
+cost?: number;                              // If Business Type hasn't a Subtype it will have a Cost
+baseIncome?: number;                        // If Business Type hasn't a Subtype it will have a Base Income
+maxBaseSpace?: number;                      // If Business Type hasn't a Subtype it will have a Max Base Space
+cars?: Car[];                               // Cars of the Business
+spacePrices?: Space[];                      // Add Space for more Cars
+
+
+
+---------- BusinessSubtype ----------
+subtype: number;                            // Subtype Number
+name: string;                               // Name of the Business Subtype
+cost: number;                               // Cost of the Business
+levelUpCost: number;                        // Cost to Level Up the Business
+levelUpCostMultiplier: number;              // Cost's Multiplier in each Level Up
+baseIncome: number;                         // Base Income of the Business
+incomeMultiplier: number;                   // Income's Multiplier in each Level Up
+maxLevel: number;                           // Max Level of the Business Subtype
+
+
+
+---------- Car ----------
+name: string;                               // Name of the Car
+kilometers: number;                         // Kilometers that the Car can make until it disapears
+incomePerHour: number;                      // Income that the Car generates per hour
+category: string;                           // Category of the Car
+price: number;                              // Price of the Car
+
+
+
+---------- Space ----------
+addedSpace: number;                         // Space added for more Cars to the Business
+price: number;                              // Price to add spaces

@@ -1,0 +1,251 @@
+[
+    {
+        "name": "Shop",
+        "description": "A simple business to start your empire",
+        "category": "Commerce",
+        "icon": "shopping-basket",
+        "subtypes": [
+            {
+                "subtype": 0,
+                "name": "Local Shop",
+                "cost": 4899,
+                "levelUpCost": 1469.7,
+                "levelUpCostMultiplier": 1.30,
+                "baseIncome": 102.06,
+                "incomeMultiplier": 1.35,
+                "maxLevel": 10
+            },
+            {
+                "subtype": 1,
+                "name": "Small Chain of Shops",
+                "cost": 12999,
+                "levelUpCost": 3899.7,
+                "levelUpCostMultiplier": 1.30,
+                "baseIncome": 324.97,
+                "incomeMultiplier": 1.30,
+                "maxLevel": 10
+            },
+            {
+                "subtype": 2,
+                "name": "Large Chain of Shops",
+                "cost": 54999,
+                "levelUpCost": 16499.7,
+                "levelUpCostMultiplier": 1.30,
+                "baseIncome": 1527.75,
+                "incomeMultiplier": 1.25,
+                "maxLevel": 10
+            }
+        ]
+    },
+    {
+        "name": "City Taxi",
+        "description": "Buy cars and drive passengers to earn cash",
+        "category": "Transport",
+        "icon": "taxi",
+        "cost": 9999,
+        "baseIncome": 0,
+        "maxBaseSpace": 5,
+        "cars": [
+            {
+                "name": "Renolt Logon",
+                "kilometers": 520000,
+                "incomePerHour": 560,
+                "category": "Economic",
+                "price": 10800
+            },
+            {
+                "name": "Hendaji Solaer",
+                "kilometers": 480000,
+                "incomePerHour": 560,
+                "category": "Economic",
+                "price": 12262
+            },
+            {
+                "name": "Vada Grand",
+                "kilometers": 300000,
+                "incomePerHour": 560,
+                "category": "Economic",
+                "price": 7853
+            },
+            {
+                "name": "Skotta Octavian",
+                "kilometers": 420000,
+                "incomePerHour": 954,
+                "category": "Comfort",
+                "price": 22246
+            },
+            {
+                "name": "Hendaji Elintra",
+                "kilometers": 390000,
+                "incomePerHour": 954,
+                "category": "Comfort",
+                "price": 20171
+            },
+            {
+                "name": "Toyoda Samry",
+                "kilometers": 415000,
+                "incomePerHour": 1180,
+                "category": "Comfort+",
+                "price": 29375
+            },
+            {
+                "name": "Hendaji Sontair",
+                "kilometers": 410000,
+                "incomePerHour": 1180,
+                "category": "Comfort+",
+                "price": 26302
+            },
+            {
+                "name": "Marcedes-Benc E-class",
+                "kilometers": 460000,
+                "incomePerHour": 2420,
+                "category": "Activity",
+                "price": 66000
+            },
+            {
+                "name": "DMW 5",
+                "kilometers": 450000,
+                "incomePerHour": 2420,
+                "category": "Activity",
+                "price": 62002
+            },
+            {
+                "name": "Auddi A6",
+                "kilometers": 440000,
+                "incomePerHour": 2420,
+                "category": "Activity",
+                "price": 57869
+            },
+            {
+                "name": "Marcedes-Benc S-class",
+                "kilometers": 305000,
+                "incomePerHour": 5040,
+                "category": "Premier",
+                "price": 137783
+            },
+            {
+                "name": "DMW 7",
+                "kilometers": 300000,
+                "incomePerHour": 5040,
+                "category": "Premier",
+                "price": 124005
+            },
+            {
+                "name": "Auddi A8",
+                "kilometers": 298000,
+                "incomePerHour": 5040,
+                "category": "Premier",
+                "price": 122274
+            },
+            {
+                "name": "Marcedes-Maybech S-class",
+                "kilometers": 600000,
+                "incomePerHour": 13050,
+                "category": "Elite",
+                "price": 262000
+            }
+        ],
+        "spacePrices": [
+            {
+                "addedSpace": 5,
+                "price": 17500
+            },
+            {
+                "addedSpace": 10,
+                "price": 50000
+            },
+            {
+                "addedSpace": 20,
+                "price": 140000
+            }
+        ]
+    },
+    {
+        "name": "Factory",
+        "description": "Produces goods for steady income",
+        "category": "Industry",
+        "icon": "factory",
+        "subtypes": [
+            {
+                "subtype": 0,
+                "name": "Small Factory",
+                "cost": 24999,
+                "levelUpCost": 2999.88,
+                "levelUpCostMultiplier": 1.12,
+                "baseIncome": 520,
+                "incomeMultiplier": 1.16,
+                "maxLevel": 20
+            },
+            {
+                "subtype": 1,
+                "name": "Large Factory",
+                "cost": 184990,
+                "levelUpCost": 27748.5,
+                "levelUpCostMultiplier": 1.15,
+                "baseIncome": 3853,
+                "incomeMultiplier": 1.17,
+                "maxLevel": 50
+            }
+        ]
+    },
+    {
+        "name": "Parcel Transport Company",
+        "description": "Fast and reliable parcel delivery across the city",
+        "category": "Logistics",
+        "icon": "van",
+        "cost": 19899,
+        "baseIncome": 0,
+        "maxBaseSpace": 5,
+        "cars": [
+            {
+                "name": "Volgswagon Kraftar",
+                "kilometers": 1340000,
+                "incomePerHour": 1750,
+                "category": "City",
+                "price": 41335
+            },
+            {
+                "name": "Fort Transeet",
+                "kilometers": 1280000,
+                "incomePerHour": 1750,
+                "category": "City",
+                "price": 37000
+            },
+            {
+                "name": "Dazelee New Age",
+                "kilometers": 750000,
+                "incomePerHour": 1750,
+                "category": "City",
+                "price": 29556
+            },
+            {
+                "name": "Scannea M Series",
+                "kilometers": 2100000,
+                "incomePerHour": 3800,
+                "category": "Long Distance",
+                "price": 112402
+            },
+            {
+                "name": "CAF ZF",
+                "kilometers": 1940000,
+                "incomePerHour": 3800,
+                "category": "Long Distance",
+                "price": 108617
+            }
+        ],
+        "spacePrices": [
+            {
+                "addedSpace": 5,
+                "price": 30000
+            },
+            {
+                "addedSpace": 10,
+                "price": 80000
+            },
+            {
+                "addedSpace": 20,
+                "price": 200000
+            }
+        ]
+    }
+]
