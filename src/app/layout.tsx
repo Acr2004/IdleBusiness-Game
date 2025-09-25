@@ -4,6 +4,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import { MoneyProvider } from "@/contexts/MoneyContext";
 import { BusinessProvider } from "@/contexts/BusinessContext";
+import { ConvexClientProvider } from "@/contexts/ConvexClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,15 +31,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <BusinessProvider>
-          <MoneyProvider>
-            <main className="flex">
-              <Sidebar />
+        <ConvexClientProvider>
+          <BusinessProvider>
+            <MoneyProvider>
+              <main className="flex">
+                <Sidebar />
 
-              {children}
-            </main>
-          </MoneyProvider>
-        </BusinessProvider>
+                {children}
+              </main>
+            </MoneyProvider>
+          </BusinessProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );
