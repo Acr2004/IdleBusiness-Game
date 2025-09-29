@@ -7,30 +7,6 @@ import { FactoryBusiness } from "../classes/FactoryBusiness";
 import { TaxiBusiness } from "../classes/TaxiBusiness";
 import { Car } from "@/classes/Car";
 
-export interface StoredCar {
-  name: string;
-  category: string;
-  maxKilometers: number;
-  kilometers: number;
-  incomePerHour: number;
-  id: string;
-}
-
-export interface StoredBusiness {
-  name: string;
-  type: number;
-  id: string;
-  subtype?: number;
-  incomePerHour?: number;
-  incomeMultiplier?: number;
-  levelUpCost?: number;
-  levelUpCostMultiplier?: number;
-  maxLevel?: number;
-  level?: number;
-  maxSpace?: number;
-  activeCars?: StoredCar[];
-}
-
 type SpacePrice = {
     addedSpace: number;
     price: number;
@@ -108,61 +84,50 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
         fetchData();
     }, []);
 
+    // Check for Player Data in Local Storage
     useEffect(() => {
         const storedData = localStorage.getItem("@business-game:businesses");
-        if (!storedData) return;
+        
+        if (storedData) {
+            try {
+                const parsedData: any[] = JSON.parse(storedData);
 
-        try {
-            const parsedData = JSON.parse(storedData) as unknown;
+                const businesses = parsedData.map((business) => {
+                    if (business.type === 0) {
+                        return new ShopBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
+                    }
+                    else if (business.type === 1) {
+                        const cars = business.activeCars.map((c: any) =>
+                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                        );
 
-            // Garante que é um array e tem a forma esperada
-            if (!Array.isArray(parsedData)) {
-            throw new Error("Invalid data");
+                        console.log(cars);
+
+                        return new TaxiBusiness(business.name, business.type, cars, business.maxSpace, business.id);
+                    }
+                    else if (business.type === 2) {
+                        return new FactoryBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
+                    }
+                    else if (business.type === 3) {
+                        const cars = business.activeCars.map((c: any) =>
+                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                        );
+
+                        return new TransportBusiness(business.name, business.type, cars, business.maxSpace, business.id);
+                    }
+                    else {
+                        return new Business(business.name, business.type, business.id);
+                    }
+                });
+
+                console.log(businesses);
+
+                setBusinesses(businesses);
+            } catch (error) {
+                console.error("Error with Local Storage parsing.", error);
             }
-
-            const businesses = parsedData.map((b: StoredBusiness) => {
-            switch (b.type) {
-                case 0:
-                return new ShopBusiness(
-                    b.name, b.type, b.subtype!, b.incomePerHour!,
-                    b.incomeMultiplier!, b.levelUpCost!, b.levelUpCostMultiplier!,
-                    b.maxLevel!, b.level!, b.id
-                );
-
-                case 1: {
-                const cars = (b.activeCars ?? []).map(
-                    (c: StoredCar) =>
-                    new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
-                );
-                return new TaxiBusiness(b.name, b.type, cars, b.maxSpace!, b.id);
-                }
-
-                case 2:
-                return new FactoryBusiness(
-                    b.name, b.type, b.subtype!, b.incomePerHour!,
-                    b.incomeMultiplier!, b.levelUpCost!, b.levelUpCostMultiplier!,
-                    b.maxLevel!, b.level!, b.id
-                );
-
-                case 3: {
-                const cars = (b.activeCars ?? []).map(
-                    (c: StoredCar) =>
-                    new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
-                );
-                return new TransportBusiness(b.name, b.type, cars, b.maxSpace!, b.id);
-                }
-
-                default:
-                return new Business(b.name, b.type, b.id);
-            }
-            });
-
-            setBusinesses(businesses);
-        } catch (err) {
-            console.error("Error parsing Local Storage:", err);
         }
-        }, [businessData]);
-
+    }, [businessData]);
 
     function addBusiness(name: string, type: number, subtype?: number) {
         let newBusiness: Business;

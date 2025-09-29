@@ -53,7 +53,7 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
     // Check Local Storage
     useEffect(() => {
         setMoney(Number(localStorage.getItem("@business-game:money")) || 0);
-        setXp(Number(localStorage.getItem("@business-game:xp")) || 0);
+        setXp(Number(localStorage.getItem("@business-game:xp")) > LEVELS[LEVELS.length - 1].xpRequired ? LEVELS[LEVELS.length - 1].xpRequired : Number(localStorage.getItem("@business-game:xp")) || 0);
         if(Number(localStorage.getItem("@business-game:level")) === 0) {
             setXpPreviousLevel(0);
         }
