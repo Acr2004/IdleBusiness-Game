@@ -25,7 +25,7 @@ export class TaxiBusiness extends Business {
     }
 
     addCar(name: string, category: string, kilometers: number, incomePerHour: number) {
-        let newCar = new Car(name, category, kilometers, incomePerHour);
+        let newCar = new Car(name, category, kilometers, kilometers, incomePerHour);
         this.activeCars = [...this.activeCars, newCar];
         this.incomePerHour = this.calculateIncomePerHour();
     }

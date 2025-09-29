@@ -5,9 +5,10 @@ export class Car {
     name: string;
     category: string;
     kilometers: number;
+    maxKilometers: number;
     incomePerHour: number;
 
-    constructor(name: string, category: string, kilometers: number, incomePerHour: number, id: string = "") {
+    constructor(name: string, category: string, maxKilometers: number, kilometers: number, incomePerHour: number, id: string = "") {
         if(id === "") {
             this.id = uuidv4();
         }
@@ -17,7 +18,12 @@ export class Car {
 
         this.name = name;
         this.category = category;
+        this.maxKilometers = maxKilometers;
         this.kilometers = kilometers;
         this.incomePerHour = incomePerHour;
+    }
+
+    removeKilometers() {
+        this.kilometers -= this.maxKilometers * 0.0004;
     }
 }

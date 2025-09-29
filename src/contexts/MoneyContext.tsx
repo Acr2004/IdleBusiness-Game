@@ -51,8 +51,6 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
     const [xpToNextLevel, setXpToNextLevel] = useState(LEVELS[0].xpRequired);
     const [level, setLevel] = useState(0);
 
-    const { businesses, calculateAllIncomePerHour } = useContext(BusinessContext);
-
     // Check Local Storage
     useEffect(() => {
         setMoney(Number(localStorage.getItem("@business-game:money")) || 0);
@@ -67,20 +65,6 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
         setLevel(Number(localStorage.getItem("@business-game:level")) || 0);
         setPerClick(LEVELS[Number(localStorage.getItem("@business-game:level"))].perClick || LEVELS[0].perClick);
     }, []);
-
-    // Add All Businesses Income
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const moneyPerMinute = parseFloat((calculateAllIncomePerHour() / 60).toFixed(2));
-            setMoney(prevState => prevState + moneyPerMinute);
-
-            console.log(moneyPerMinute);
-
-            localStorage.setItem("@business-game:money", (parseFloat(localStorage.getItem("@business-game:money") || "0") + moneyPerMinute).toString());
-        }, 60000);
-
-        return () => clearInterval(interval);
-    });
 
     function updateMoney(newMoney: number) {
         setMoney(newMoney);

@@ -5,14 +5,16 @@ import { TransportBusiness } from "../classes/TransportBusiness";
 import { ShopBusiness } from "../classes/ShopBusiness";
 import { FactoryBusiness } from "../classes/FactoryBusiness";
 import { TaxiBusiness } from "../classes/TaxiBusiness";
+import { Car } from "@/classes/Car";
 
 type SpacePrice = {
     addedSpace: number;
     price: number;
 }
 
-export type Car = {
+export type CarInfo = {
     name: string;
+    maxKilometers: number;
     kilometers: number;
     incomePerHour: number;
     category: string;
@@ -39,7 +41,7 @@ export type BusinessTypeInfo = {
     cost?: number;
     baseIncome?: number;
     maxBaseSpace?: number;
-    cars?: Car[];
+    cars?: CarInfo[];
     spacePrices?: SpacePrice[];
 }
 
@@ -51,6 +53,7 @@ export interface BusinessContextType {
     updateBusinessLevel: (business: Business) => void;
     addCarToBusiness: (business: Business, car: Car) => void;
     addMoreSpace: (business: Business, spaceToAdd: number) => void;
+    removeKilometers: () => void;
     deleteBusiness: (businessToDelete: Business) => void;
     calculateAllIncomePerHour: () => number;
     getBestBusiness: () => Business | null;
@@ -91,21 +94,33 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
 
                 const businesses = parsedData.map((business) => {
                     if (business.type === 0) {
-                        return Object.assign(new ShopBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id), business);
+                        return new ShopBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
                     }
                     else if (business.type === 1) {
-                        return Object.assign(new TaxiBusiness(business.name, business.type, business.activeCars, business.maxSpace, business.id), business);
+                        const cars = business.activeCars.map((c: any) =>
+                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                        );
+
+                        console.log(cars);
+
+                        return new TaxiBusiness(business.name, business.type, cars, business.maxSpace, business.id);
                     }
                     else if (business.type === 2) {
-                        return Object.assign(new FactoryBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id), business);
+                        return new FactoryBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
                     }
                     else if (business.type === 3) {
-                        return Object.assign(new TransportBusiness(business.name, business.type, business.activeCars, business.maxSpace, business.id), business);
+                        const cars = business.activeCars.map((c: any) =>
+                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                        );
+
+                        return new TransportBusiness(business.name, business.type, cars, business.maxSpace, business.id);
                     }
                     else {
-                        new Business(business.name, business.type, business.id);
+                        return new Business(business.name, business.type, business.id);
                     }
                 });
+
+                console.log(businesses);
 
                 setBusinesses(businesses);
             } catch (error) {
@@ -184,6 +199,17 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
         }
     }
 
+    function removeKilometers() {
+        for(let business of businesses) {
+            if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
+                for(let car of business.activeCars) {
+                    car.removeKilometers();
+                }
+            }
+        }
+        localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
+    }
+
     function deleteBusiness(businessToDelete: Business) {
         setBusinesses(() => {
             const businessWithoutDeleted = businesses.filter((business) => business.id !== businessToDelete.id);
@@ -215,6 +241,7 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                 updateBusinessLevel,
                 addCarToBusiness,
                 addMoreSpace,
+                removeKilometers,
                 deleteBusiness,
                 calculateAllIncomePerHour,
                 getBestBusiness
