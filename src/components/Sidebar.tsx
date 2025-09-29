@@ -48,8 +48,14 @@ export default function Sidebar() {
 
     // Apllies the localStorage's saved accent
     useEffect(() => {
-        const savedAccent = localStorage.getItem("@business-game:accent") || "red";
-        document.documentElement.classList.add(`accent-${savedAccent}`);
+        const savedAccent = localStorage.getItem("@business-game:accent");
+
+        if(savedAccent !== "red" && savedAccent !== "blue" && savedAccent !== "green" && savedAccent !== "black") {
+             document.documentElement.classList.add(`accent-red`);
+        }
+        else {
+            document.documentElement.classList.add(`accent-${savedAccent}`);
+        }
     }, []);
 
     return (

@@ -28,7 +28,7 @@ export function TimeFlowProvider({ children }: TimeFlowProviderProps) {
             console.log(businesses);
 
             removeKilometers();
-        }, 60000);
+        }, 5000);
 
         return () => clearInterval(interval);
     });
