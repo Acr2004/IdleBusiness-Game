@@ -187,7 +187,7 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
 
     function addCarToBusiness(business: Business, car: CarInfo) {
         if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
-            business.addCar(car.name, car.category, car.maxKilometers, car.kilometers, car.incomePerHour);
+            business.addCar(car.name, car.category, car.kilometers, car.kilometers, car.incomePerHour);
             localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
         }
     }
