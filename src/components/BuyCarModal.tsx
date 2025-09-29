@@ -1,12 +1,12 @@
-import { Car } from "@/contexts/BusinessContext";
+import { CarInfo } from "@/contexts/BusinessContext";
 import { X } from "lucide-react";
 
 interface BuyCarModalProps {
-  cars: Car[];
+  cars: CarInfo[];
   money: number;
   formatCurrency: (value: number) => string;
   onClose: () => void;
-  onBuy: (car: Car) => void;
+  onBuy: (car: CarInfo) => void;
 }
 
 export function BuyCarModal({ cars, money, formatCurrency, onClose, onBuy }: BuyCarModalProps) {

@@ -4,11 +4,7 @@ import { createContext, useContext, useEffect } from "react";
 import { BusinessContext } from "./BusinessContext";
 import { MoneyContext } from "./MoneyContext";
 
-interface TimeFlowContextType {
-    
-}
-
-export const TimeFlowContext = createContext({} as TimeFlowContextType);
+export const TimeFlowContext = createContext({});
 
 interface TimeFlowProviderProps {
     children: React.ReactNode;

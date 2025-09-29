@@ -1,5 +1,5 @@
 import { Business } from "@/classes/Business";
-import { BusinessContext, Car } from "@/contexts/BusinessContext";
+import { BusinessContext, CarInfo } from "@/contexts/BusinessContext";
 import { FactoryBusiness } from "@/classes/FactoryBusiness";
 import { ShopBusiness } from "@/classes/ShopBusiness";
 import { TaxiBusiness } from "@/classes/TaxiBusiness";
@@ -41,7 +41,7 @@ export function BusinessStatSectionModal({ businessData, business }: BusinessSta
         }
     };
 
-    const handleBuyCar = (car: Car) => {
+    const handleBuyCar = (car: CarInfo) => {
         if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
             if(money >= car.price) {
                 updateMoney(money - car.price);
@@ -108,7 +108,7 @@ export function BusinessStatSectionModal({ businessData, business }: BusinessSta
                             />
                         ) : (
                             <h3 className="text-lg font-semibold text-secondary justify-center flex items-center py-2">
-                                You don't have any cars. Try to buy one!
+                                You don&apos;t have any cars. Try to buy one!
                             </h3>
                         )}
 

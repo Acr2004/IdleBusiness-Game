@@ -51,13 +51,13 @@ export function CreateBusinessModal({
         if (!(selectedBusinessType !== null) || businessNameInput.trim() === "") return;
 
         if (businessData[selectedBusinessType].subtypes && selectedSubtype !== null) {
-            let businessPrice = businessData[selectedBusinessType].subtypes[selectedSubtype].cost;
+            const businessPrice = businessData[selectedBusinessType].subtypes[selectedSubtype].cost;
             if (money < businessPrice) return;
 
             updateMoney(money - businessPrice);
         }
         else if (!businessData[selectedBusinessType].subtypes) {
-            let businessPrice = businessData[selectedBusinessType].cost;
+            const businessPrice = businessData[selectedBusinessType].cost;
             if (money < businessPrice!) return;
 
             updateMoney(money - businessPrice!);

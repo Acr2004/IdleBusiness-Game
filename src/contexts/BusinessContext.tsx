@@ -7,6 +7,30 @@ import { FactoryBusiness } from "../classes/FactoryBusiness";
 import { TaxiBusiness } from "../classes/TaxiBusiness";
 import { Car } from "@/classes/Car";
 
+export interface StoredCar {
+  name: string;
+  category: string;
+  maxKilometers: number;
+  kilometers: number;
+  incomePerHour: number;
+  id: string;
+}
+
+export interface StoredBusiness {
+  name: string;
+  type: number;
+  id: string;
+  subtype?: number;
+  incomePerHour?: number;
+  incomeMultiplier?: number;
+  levelUpCost?: number;
+  levelUpCostMultiplier?: number;
+  maxLevel?: number;
+  level?: number;
+  maxSpace?: number;
+  activeCars?: StoredCar[];
+}
+
 type SpacePrice = {
     addedSpace: number;
     price: number;
@@ -51,7 +75,7 @@ export interface BusinessContextType {
     addBusiness: (name: string, type: number, subtype?: number) => void;
     changeBusinessName: (business: Business, newName: string) => void;
     updateBusinessLevel: (business: Business) => void;
-    addCarToBusiness: (business: Business, car: Car) => void;
+    addCarToBusiness: (business: Business, car: CarInfo) => void;
     addMoreSpace: (business: Business, spaceToAdd: number) => void;
     removeKilometers: () => void;
     deleteBusiness: (businessToDelete: Business) => void;
@@ -76,7 +100,7 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                 const res = await fetch("/data/businessData.json");
                 const data = await res.json();
                 setBusinessData(data);
-            } catch(error) {
+            } catch {
                 console.error("Error loading Business Data from JSON.");
             }
         }
@@ -84,57 +108,68 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
         fetchData();
     }, []);
 
-    // Check for Player Data in Local Storage
     useEffect(() => {
         const storedData = localStorage.getItem("@business-game:businesses");
-        
-        if (storedData) {
-            try {
-                const parsedData: any[] = JSON.parse(storedData);
+        if (!storedData) return;
 
-                const businesses = parsedData.map((business) => {
-                    if (business.type === 0) {
-                        return new ShopBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
-                    }
-                    else if (business.type === 1) {
-                        const cars = business.activeCars.map((c: any) =>
-                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
-                        );
+        try {
+            const parsedData = JSON.parse(storedData) as unknown;
 
-                        console.log(cars);
-
-                        return new TaxiBusiness(business.name, business.type, cars, business.maxSpace, business.id);
-                    }
-                    else if (business.type === 2) {
-                        return new FactoryBusiness(business.name, business.type, business.subtype, business.incomePerHour, business.incomeMultiplier, business.levelUpCost, business.levelUpCostMultiplier, business.maxLevel, business.level, business.id);
-                    }
-                    else if (business.type === 3) {
-                        const cars = business.activeCars.map((c: any) =>
-                            new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
-                        );
-
-                        return new TransportBusiness(business.name, business.type, cars, business.maxSpace, business.id);
-                    }
-                    else {
-                        return new Business(business.name, business.type, business.id);
-                    }
-                });
-
-                console.log(businesses);
-
-                setBusinesses(businesses);
-            } catch (error) {
-                console.error("Error with Local Storage parsing.", error);
+            // Garante que é um array e tem a forma esperada
+            if (!Array.isArray(parsedData)) {
+            throw new Error("Invalid data");
             }
+
+            const businesses = parsedData.map((b: StoredBusiness) => {
+            switch (b.type) {
+                case 0:
+                return new ShopBusiness(
+                    b.name, b.type, b.subtype!, b.incomePerHour!,
+                    b.incomeMultiplier!, b.levelUpCost!, b.levelUpCostMultiplier!,
+                    b.maxLevel!, b.level!, b.id
+                );
+
+                case 1: {
+                const cars = (b.activeCars ?? []).map(
+                    (c: StoredCar) =>
+                    new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                );
+                return new TaxiBusiness(b.name, b.type, cars, b.maxSpace!, b.id);
+                }
+
+                case 2:
+                return new FactoryBusiness(
+                    b.name, b.type, b.subtype!, b.incomePerHour!,
+                    b.incomeMultiplier!, b.levelUpCost!, b.levelUpCostMultiplier!,
+                    b.maxLevel!, b.level!, b.id
+                );
+
+                case 3: {
+                const cars = (b.activeCars ?? []).map(
+                    (c: StoredCar) =>
+                    new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
+                );
+                return new TransportBusiness(b.name, b.type, cars, b.maxSpace!, b.id);
+                }
+
+                default:
+                return new Business(b.name, b.type, b.id);
+            }
+            });
+
+            setBusinesses(businesses);
+        } catch (err) {
+            console.error("Error parsing Local Storage:", err);
         }
-    }, [businessData]);
+        }, [businessData]);
+
 
     function addBusiness(name: string, type: number, subtype?: number) {
         let newBusiness: Business;
 
         switch(type) {
             case 0: {
-                let subtypeData = businessData[type].subtypes![subtype!];
+                const subtypeData = businessData[type].subtypes![subtype!];
                 newBusiness = new ShopBusiness(
                     name, type, subtype!,
                     subtypeData.baseIncome, subtypeData.incomeMultiplier,
@@ -147,7 +182,7 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                 break;
             }
             case 2: {
-                let subtypeData = businessData[type].subtypes![subtype!];
+                const subtypeData = businessData[type].subtypes![subtype!];
                 newBusiness = new FactoryBusiness(
                     name, type, subtype!,
                     subtypeData.baseIncome, subtypeData.incomeMultiplier,
@@ -185,9 +220,9 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
         }
     }
 
-    function addCarToBusiness(business: Business, car: Car) {
+    function addCarToBusiness(business: Business, car: CarInfo) {
         if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
-            business.addCar(car.name, car.category, car.kilometers, car.incomePerHour);
+            business.addCar(car.name, car.category, car.maxKilometers, car.kilometers, car.incomePerHour);
             localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
         }
     }
@@ -200,9 +235,9 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
     }
 
     function removeKilometers() {
-        for(let business of businesses) {
+        for(const business of businesses) {
             if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
-                for(let car of business.activeCars) {
+                for(const car of business.activeCars) {
                     car.removeKilometers();
                 }
             }

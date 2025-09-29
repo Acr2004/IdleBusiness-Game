@@ -24,9 +24,10 @@ export class TransportBusiness extends Business {
         this.maxSpace += spaceToAdd;
     }
 
-    addCar(name: string, category: string, kilometers: number, incomePerHour: number) {
-        let newCar = new Car(name, category, kilometers, kilometers, incomePerHour);
+    addCar(name: string, category: string, maxKilometers: number, kilometers: number, incomePerHour: number) {
+        const newCar = new Car(name, category, maxKilometers, kilometers, incomePerHour);
         this.activeCars = [...this.activeCars, newCar];
+        this.incomePerHour = this.calculateIncomePerHour();
     }
 
     calculateIncomePerHour() {

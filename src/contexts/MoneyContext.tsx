@@ -1,6 +1,5 @@
 "use client"
-import { createContext, useContext, useEffect, useState } from "react";
-import { BusinessContext } from "./BusinessContext";
+import { createContext, useEffect, useState } from "react";
 
 const LEVELS = [
     {
