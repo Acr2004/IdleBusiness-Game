@@ -4,7 +4,11 @@ import { createContext, useContext, useEffect } from "react";
 import { BusinessContext } from "./BusinessContext";
 import { MoneyContext } from "./MoneyContext";
 
-export const TimeFlowContext = createContext({});
+interface TimeFlowContextType {
+    todo: () => void;
+}
+
+export const TimeFlowContext = createContext({} as TimeFlowContextType);
 
 interface TimeFlowProviderProps {
     children: React.ReactNode;
@@ -28,9 +32,13 @@ export function TimeFlowProvider({ children }: TimeFlowProviderProps) {
 
         return () => clearInterval(interval);
     });
+
+    function todo() {
+        //TODO
+    }
     
     return (
-        <TimeFlowContext.Provider value="">
+        <TimeFlowContext.Provider value={{ todo }}>
             { children }
         </TimeFlowContext.Provider>
     );

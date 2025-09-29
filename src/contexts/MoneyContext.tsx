@@ -71,8 +71,10 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
     }
 
     function updateXp(newXp: number) {
-        setXp(newXp);
-        localStorage.setItem("@business-game:xp", newXp.toString());
+        if(newXp < LEVELS[LEVELS.length - 1].xpRequired) {
+            setXp(newXp);
+            localStorage.setItem("@business-game:xp", newXp.toString());
+        }
     }
 
     function checkIfUpdateLevel(newXp: number) {
