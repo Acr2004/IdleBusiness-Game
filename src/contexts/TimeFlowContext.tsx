@@ -16,7 +16,7 @@ interface TimeFlowProviderProps {
 
 export function TimeFlowProvider({ children }: TimeFlowProviderProps) {
     const { money, updateMoney } = useContext(MoneyContext);
-    const { businesses, calculateAllIncomePerHour, removeKilometers } = useContext(BusinessContext);
+    const { calculateAllIncomePerHour, removeKilometers } = useContext(BusinessContext);
 
     // Add All Businesses Income and Remove Kilometers from Cars
     useEffect(() => {
@@ -24,11 +24,8 @@ export function TimeFlowProvider({ children }: TimeFlowProviderProps) {
             const moneyPerMinute = parseFloat((calculateAllIncomePerHour() / 60).toFixed(2));
             updateMoney(money + moneyPerMinute);
 
-            console.log(moneyPerMinute);
-            console.log(businesses);
-
             removeKilometers();
-        }, 5000);
+        }, 60000);
 
         return () => clearInterval(interval);
     });

@@ -52,6 +52,7 @@ export default function Sidebar() {
 
         if(savedAccent !== "red" && savedAccent !== "blue" && savedAccent !== "green" && savedAccent !== "black") {
              document.documentElement.classList.add(`accent-red`);
+             localStorage.setItem("@business-game:accent", "red");
         }
         else {
             document.documentElement.classList.add(`accent-${savedAccent}`);

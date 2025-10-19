@@ -52,17 +52,49 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
 
     // Check Local Storage
     useEffect(() => {
+        // Money
         setMoney(Number(localStorage.getItem("@business-game:money")) || 0);
-        setXp(Number(localStorage.getItem("@business-game:xp")) > LEVELS[LEVELS.length - 1].xpRequired ? LEVELS[LEVELS.length - 1].xpRequired : Number(localStorage.getItem("@business-game:xp")) || 0);
-        if(Number(localStorage.getItem("@business-game:level")) === 0) {
+
+        // Level
+        let localStorageLevel = 0;
+
+        if(Number(localStorage.getItem("@business-game:level")) >= LEVELS.length) {
+            setLevel(LEVELS.length - 1);
+            localStorage.setItem("@business-game:level", `${LEVELS.length - 1}`);
+
+            localStorageLevel = LEVELS.length - 1;
+        }
+        else {
+            setLevel(Number(localStorage.getItem("@business-game:level")));
+
+            localStorageLevel = Number(localStorage.getItem("@business-game:level"));
+        }
+
+        // XP
+        if(Number(localStorage.getItem("@business-game:xp")) > LEVELS[localStorageLevel].xpRequired) {
+            setXp(LEVELS[localStorageLevel].xpRequired);
+            localStorage.setItem("@business-game:xp", `${LEVELS[localStorageLevel].xpRequired}`);
+        }
+        else {
+            setXp(Number(localStorage.getItem("@business-game:xp")));
+        }
+        
+        if(localStorageLevel === 0) {
             setXpPreviousLevel(0);
         }
         else {
-            setXpPreviousLevel(LEVELS[Number(localStorage.getItem("@business-game:level")) - 1].xpRequired || 0);
+            setXpPreviousLevel(LEVELS[localStorageLevel - 1].xpRequired);
         }
-        setXpToNextLevel(LEVELS[Number(localStorage.getItem("@business-game:level"))].xpRequired || LEVELS[0].xpRequired);
-        setLevel(Number(localStorage.getItem("@business-game:level")) || 0);
-        setPerClick(LEVELS[Number(localStorage.getItem("@business-game:level"))].perClick || LEVELS[0].perClick);
+
+        if(localStorageLevel === LEVELS.length - 1) {
+            setXpToNextLevel(LEVELS[localStorageLevel].xpRequired);
+        }
+        else {
+            setXpToNextLevel(LEVELS[localStorageLevel].xpRequired);
+        }
+
+        // Per Click
+        setPerClick(LEVELS[localStorageLevel].perClick);
     }, []);
 
     function updateMoney(newMoney: number) {
@@ -82,6 +114,16 @@ export function MoneyProvider({ children }: MoneyProviderProps) {
     }
 
     function checkIfUpdateLevel(newXp: number) {
+        if (level > LEVELS.length - 1) {
+            return;
+        }
+
+        if (level === LEVELS.length - 1) {
+            setXpPreviousLevel(LEVELS[level].xpRequired);
+            setXpToNextLevel(LEVELS[level].xpRequired);
+            return;
+        }
+
         if(LEVELS[level].xpRequired <= newXp) {
             setLevel((prevState) => prevState + 1);
             setXpPreviousLevel(LEVELS[level].xpRequired);

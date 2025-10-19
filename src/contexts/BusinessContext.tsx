@@ -120,8 +120,6 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                     }
                 });
 
-                console.log(businesses);
-
                 setBusinesses(businesses);
             } catch (error) {
                 console.error("Error with Local Storage parsing.", error);
