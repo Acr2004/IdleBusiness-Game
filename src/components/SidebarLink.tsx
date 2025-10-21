@@ -8,6 +8,7 @@ interface SidebarLinkProps {
     link: string;
     exact?: boolean;
     collapsed?: boolean;
+    disabled?: boolean;
 }
 
 function cn(...classes: Array<string | false | undefined | null>) {
@@ -20,6 +21,7 @@ export default function SidebarLink({
     link,
     exact = false,
     collapsed = false,
+    disabled = false
 }: SidebarLinkProps) {
     const pathname = usePathname();
 
@@ -28,6 +30,31 @@ export default function SidebarLink({
         : link === "/"
         ? pathname === "/"
         : pathname.startsWith(link);
+
+    if (disabled) {
+        return (
+            <div
+                className="relative group flex items-center gap-3 rounded-xl px-3 py-2 cursor-not-allowed opacity-70"
+                title="Coming soon..."
+            >
+                {/* Tooltip */}
+                <span className="absolute left-9/12 -translate-x-1/2 whitespace-nowrap rounded-md bg-secondary text-light text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    Coming soon...
+                </span>
+
+                <span
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-tertiary"
+                >
+                    {icon}
+                </span>
+                { !collapsed && (
+                    <span className="flex-1 text-left truncate font-medium text-secondary">
+                        {name}
+                    </span>
+                )}
+            </div>
+        );
+    }
 
     return (
         <Link

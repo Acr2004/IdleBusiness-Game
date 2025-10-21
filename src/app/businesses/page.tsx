@@ -56,7 +56,7 @@ export default function BusinessesPage() {
     // Merge Business
     const handleMergeBusinesses = () => {
         console.log('Fundir negócios');
-        // Aqui você implementaria a lógica para fundir negócios
+        // Aqui implemento a lógica para fundir negócios
     };
 
     return (
@@ -152,13 +152,21 @@ export default function BusinessesPage() {
                         <PlusCircle className="w-5 h-5" />
                         Create Business
                     </button>
-                    <button
-                        onClick={handleMergeBusinesses}
-                        className="flex items-center cursor-pointer gap-2 bg-secondary hover:bg-secondary-variaton text-background px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
-                    >
-                        <GitMerge className="w-5 h-5" />
-                        Merge Businesses
-                    </button>
+                    <div className='relative group'>
+                        {/* Tooltip */}
+                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-secondary text-light text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            Coming soon...
+                        </span>
+                    
+                        <button
+                            onClick={handleMergeBusinesses}
+                            className="flex items-center cursor-not-allowed gap-2 bg-secondary hover:bg-secondary-variaton text-background px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform opacity-70"
+                            disabled
+                        >
+                            <GitMerge className="w-5 h-5" />
+                            Merge Businesses
+                        </button>
+                    </div>
                 </div>
 
                 {/* Businesses Grid */}

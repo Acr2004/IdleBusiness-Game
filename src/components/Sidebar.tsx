@@ -207,18 +207,21 @@ export default function Sidebar() {
           name="Investments"
           link="/investments"
           collapsed={collapsed}
+          disabled
         />
         <SidebarLink
           icon={<Package />}
           name="Items"
           link="/items"
           collapsed={collapsed}
+          disabled
         />
         <SidebarLink
           icon={<UserCircle2 />}
           name="Profile"
           link="/profile"
           collapsed={collapsed}
+          disabled
         />
       </nav>
 
@@ -315,10 +318,16 @@ export default function Sidebar() {
                     </div>
                   </button>
                   <button
-                    className="relative cursor-pointer"
+                    className="relative cursor-not-allowed group"
                     onClick={() => setTheme("dark")}
+                    disabled
                   >
-                    <div className="rounded-xl border-2 border-border p-3 transition hover:border-primary hover:bg-background/50">
+                    {/* Tooltip */}
+                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-secondary text-light text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      Coming soon...
+                    </span>
+
+                    <div className="rounded-xl border-2 border-border p-3 opacity-70">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Moon className="h-4 w-4 text-tertiary" />
