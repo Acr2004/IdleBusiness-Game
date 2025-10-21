@@ -1,4 +1,5 @@
 import { Business } from "@/classes/Business";
+import { ConstructionBusiness } from "@/classes/ConstructionBusiness";
 import { FactoryBusiness } from "@/classes/FactoryBusiness";
 import { ShopBusiness } from "@/classes/ShopBusiness";
 import { TaxiBusiness } from "@/classes/TaxiBusiness";
@@ -21,6 +22,12 @@ export function BusinessStatModal({ business }: BusinessStatModalProps) {
                 <div className="bg-background rounded-lg p-4 border-2 border-border">
                     <div className="font-semibold text-secondary mb-1">Cars</div>
                     <div className="text-2xl font-bold text-secondary">{business.activeCars.length} / {business.maxSpace}</div>
+                </div>
+            )}
+            { (business instanceof ConstructionBusiness) && (
+                <div className="bg-background rounded-lg p-4 border-2 border-border">
+                    <div className="font-semibold text-secondary mb-1">Projects</div>
+                    <div className="text-2xl font-bold text-secondary">{business.constructions.length}</div>
                 </div>
             )}
         </>

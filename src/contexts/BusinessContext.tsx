@@ -6,11 +6,32 @@ import { ShopBusiness } from "../classes/ShopBusiness";
 import { FactoryBusiness } from "../classes/FactoryBusiness";
 import { TaxiBusiness } from "../classes/TaxiBusiness";
 import { Car } from "@/classes/Car";
+import { ConstructionBusiness } from "@/classes/ConstructionBusiness";
+import { Construction } from "@/classes/Construction";
+
+export type ConstructionInfo = {
+    name: string;
+    materials: {
+        name: string;
+        amount: number;
+        icon: string;
+    }[];
+    time: number;
+    price: number;
+    level: number;
+    previous: number;
+};
+
+export type Material = {
+    name: string;
+    price: number;
+    icon: string;
+};
 
 type SpacePrice = {
     addedSpace: number;
     price: number;
-}
+};
 
 export type CarInfo = {
     name: string;
@@ -19,7 +40,7 @@ export type CarInfo = {
     incomePerHour: number;
     category: string;
     price: number;
-}
+};
 
 type BusinessSubtypeInfo = {
     subtype: number;
@@ -30,7 +51,7 @@ type BusinessSubtypeInfo = {
     baseIncome: number;
     incomeMultiplier: number;
     maxLevel: number;
-}
+};
 
 export type BusinessTypeInfo = {
     name: string;
@@ -43,7 +64,9 @@ export type BusinessTypeInfo = {
     maxBaseSpace?: number;
     cars?: CarInfo[];
     spacePrices?: SpacePrice[];
-}
+    materials?: Material[];
+    constructions?: ConstructionInfo[];
+};
 
 export interface BusinessContextType {
     businessData: BusinessTypeInfo[];
@@ -53,7 +76,12 @@ export interface BusinessContextType {
     updateBusinessLevel: (business: Business) => void;
     addCarToBusiness: (business: Business, car: CarInfo) => void;
     addMoreSpace: (business: Business, spaceToAdd: number) => void;
-    removeKilometers: () => void;
+    addConstructionToBusiness: (business: Business, construction: ConstructionInfo) => void;
+    addMaterial: (business: Business, materialName: string, quantity: number) => void;
+    getMaterialAmount: (business: Business, materialName: string) => number;
+    spendMaterial: (business: Business, materialName: string, quantity: number) => void;
+    sellConstruction: (business: Business, constructionId: string) => void;
+    removeKilometersAndTime: () => void;
     deleteBusiness: (businessToDelete: Business) => void;
     calculateAllIncomePerHour: () => number;
     getBestBusiness: () => Business | null;
@@ -101,8 +129,6 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                             new Car(c.name, c.category, c.maxKilometers, c.kilometers, c.incomePerHour, c.id)
                         );
 
-                        console.log(cars);
-
                         return new TaxiBusiness(business.name, business.type, cars, business.maxSpace, business.id);
                     }
                     else if (business.type === 2) {
@@ -114,6 +140,13 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                         );
 
                         return new TransportBusiness(business.name, business.type, cars, business.maxSpace, business.id);
+                    }
+                    else if (business.type === 4) {
+                        const constructions = business.constructions.map((c: any) =>
+                            new Construction(c.name, c.timeLeft, c.price, c.level, c.id)
+                        );
+
+                        return new ConstructionBusiness(business.name, business.type, constructions, business.salesMap, business.metal, business.workers, business.wood, business.concrete, business.id);
                     }
                     else {
                         return new Business(business.name, business.type, business.id);
@@ -157,6 +190,10 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                 newBusiness = new TransportBusiness(name, type, [], businessData[type].maxBaseSpace!);
                 break;
             }
+            case 4: {
+                newBusiness = new ConstructionBusiness(name, type, []);
+                break;
+            }
             default: {
                 newBusiness = new Business(name, type);
                 break;
@@ -197,11 +234,52 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
         }
     }
 
-    function removeKilometers() {
+    function addConstructionToBusiness(business: Business, construction: ConstructionInfo) {
+        if(business instanceof ConstructionBusiness) {
+            business.addConstruction(construction.name, construction.time, construction.price, construction.level);
+            localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
+        }
+    }
+
+    function addMaterial(business: Business, materialName: string, quantity: number) {
+        if(business instanceof ConstructionBusiness) {
+            business.addMaterial(materialName, quantity);
+            localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
+        }
+    }
+
+    function getMaterialAmount(business: Business, materialName: string) {
+        if(business instanceof ConstructionBusiness) {
+            return business.getMaterialAmount(materialName);
+        }
+
+        return 0;
+    }
+
+    function spendMaterial(business: Business, materialName: string, quantity: number) {
+        if(business instanceof ConstructionBusiness) {
+            business.useMaterial(materialName, quantity);
+            localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
+        }
+    }
+
+    function sellConstruction(business: Business, constructionId: string) {
+        if (business instanceof ConstructionBusiness) {
+            business.sellConstruction(constructionId);
+            localStorage.setItem("@business-game:businesses", JSON.stringify(businesses));
+        }
+    }
+
+    function removeKilometersAndTime() {
         for(const business of businesses) {
             if(business instanceof TaxiBusiness || business instanceof TransportBusiness) {
                 for(const car of business.activeCars) {
                     car.removeKilometers();
+                }
+            }
+            if(business instanceof ConstructionBusiness) {
+                for(const construction of business.constructions) {
+                    construction.removeTime();
                 }
             }
         }
@@ -239,7 +317,12 @@ export function BusinessProvider({ children }: BusinessProviderProps) {
                 updateBusinessLevel,
                 addCarToBusiness,
                 addMoreSpace,
-                removeKilometers,
+                addConstructionToBusiness,
+                addMaterial,
+                getMaterialAmount,
+                spendMaterial,
+                sellConstruction,
+                removeKilometersAndTime,
                 deleteBusiness,
                 calculateAllIncomePerHour,
                 getBestBusiness

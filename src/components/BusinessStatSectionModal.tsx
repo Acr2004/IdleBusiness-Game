@@ -1,5 +1,5 @@
 import { Business } from "@/classes/Business";
-import { BusinessContext, CarInfo } from "@/contexts/BusinessContext";
+import { BusinessContext, CarInfo, ConstructionInfo } from "@/contexts/BusinessContext";
 import { FactoryBusiness } from "@/classes/FactoryBusiness";
 import { ShopBusiness } from "@/classes/ShopBusiness";
 import { TaxiBusiness } from "@/classes/TaxiBusiness";
@@ -12,6 +12,10 @@ import { MoneyContext } from "@/contexts/MoneyContext";
 import { formatCurrency } from "@/utils/currency";
 import { BusinessCars } from "./BusinessCars";
 import { GarageUpgrades } from "./GarageUpgrades";
+import { ConstructionBusiness } from "@/classes/ConstructionBusiness";
+import { BusinessConstructions } from "./BusinessConstructions";
+import { StartConstructionModal } from "./StartConstructionModal";
+import { Materials } from "./Materials";
 
 interface BusinessStatSectionModalProps {
     businessData: BusinessTypeInfo[];
@@ -20,9 +24,10 @@ interface BusinessStatSectionModalProps {
 
 export function BusinessStatSectionModal({ businessData, business }: BusinessStatSectionModalProps) {
     const { money, updateMoney } = useContext(MoneyContext);
-    const { updateBusinessLevel, addCarToBusiness } = useContext(BusinessContext);
+    const { updateBusinessLevel, addCarToBusiness, addConstructionToBusiness } = useContext(BusinessContext);
     
     const [isCarModalOpen, setIsCarModalOpen] = useState(false);
+    const [isConstructionsModalOpen, setIsConstructionsModalOpen] = useState(false);
 
     const handleOpenCarModal = () => {
         setIsCarModalOpen(true);
@@ -30,6 +35,14 @@ export function BusinessStatSectionModal({ businessData, business }: BusinessSta
 
     const handleCloseCarModal = () => {
         setIsCarModalOpen(false);
+    };
+
+    const handleOpenConstructionsModal = () => {
+        setIsConstructionsModalOpen(true);
+    };
+
+    const handleCloseConstructionsModal = () => {
+        setIsConstructionsModalOpen(false);
     };
 
     const handleLevelUp = () => {
@@ -48,6 +61,13 @@ export function BusinessStatSectionModal({ businessData, business }: BusinessSta
                 addCarToBusiness(business, car);
                 handleCloseCarModal();
             }
+        }
+    };
+
+    const handleStartConstruction = (construction: ConstructionInfo) => {
+        if(business instanceof ConstructionBusiness) {
+            addConstructionToBusiness(business, construction);
+            handleCloseConstructionsModal();
         }
     };
     
@@ -139,6 +159,57 @@ export function BusinessStatSectionModal({ businessData, business }: BusinessSta
                         </h3>
 
                         <GarageUpgrades
+                            business={business}
+                        />
+                    </div>
+                </>
+            )}
+            { (business instanceof ConstructionBusiness) && (
+                <>
+                    <div className="border-2 border-border rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-secondary mb-3 flex items-center gap-2">
+                            <Handshake className="w-5 h-5" />
+                            Your Projects
+                        </h3>
+
+                        { business.constructions.length > 0 ? (
+                            <BusinessConstructions
+                                constructions={business.constructions}
+                                business={business}
+                            />
+                        ) : (
+                            <h3 className="text-lg font-semibold text-secondary justify-center flex items-center py-2">
+                                You don&apos;t have any constructions. Try to start one!
+                            </h3>
+                        )}
+
+                        <div className="mt-4">
+                            <button
+                                onClick={handleOpenConstructionsModal}
+                                className="w-full py-3 rounded-2xl font-semibold transition-colors bg-primary hover:bg-primary-variation disabled:cursor-not-allowed disabled:bg-primary/50 text-light cursor-pointer"
+                            >
+                                Start a Construction
+                            </button>
+                        </div>
+
+                        { isConstructionsModalOpen && (
+                            <StartConstructionModal
+                                business={business}
+                                materials={businessData[business.type].materials!}
+                                constructions={businessData[business.type].constructions!}
+                                formatCurrency={formatCurrency}
+                                onStart={handleStartConstruction}
+                                onClose={handleCloseConstructionsModal}
+                            />
+                        )}
+                    </div>
+                    <div className="border-2 border-border rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-secondary mb-3 flex items-center gap-2">
+                            <CirclePlus className="w-5 h-5" />
+                            Buy Materials
+                        </h3>
+
+                        <Materials
                             business={business}
                         />
                     </div>

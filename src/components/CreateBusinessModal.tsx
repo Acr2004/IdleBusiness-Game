@@ -238,7 +238,7 @@ export function CreateBusinessModal({
                             />
                             <button
                                 onClick={handleConfirmCreateBusiness}
-                                className="w-full bg-primary cursor-pointer hover:bg-primary-variaton text-light rounded-xl p-3 font-semibold"
+                                className="w-full bg-primary cursor-pointer hover:bg-primary-variation text-light rounded-xl p-3 font-semibold"
                             >
                                 Confirm
                             </button>

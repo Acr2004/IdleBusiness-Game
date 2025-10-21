@@ -39,7 +39,7 @@
     },
     {
         "name": "City Taxi",
-        "description": "Buy cars and drive passengers to earn cash",
+        "description": "Buy cars and drive passengers around the city",
         "category": "Transport",
         "icon": "taxi",
         "cost": 9999,
@@ -245,6 +245,125 @@
             {
                 "addedSpace": 20,
                 "price": 200000
+            }
+        ]
+    },
+    {
+        "name": "Construction Company",
+        "description": "Build and manage large scale projects",
+        "category": "Industry",
+        "icon": "construction",
+        "cost": 35400,
+        "baseIncome": 0,
+        "materials": [
+            {
+                "name": "Metal",
+                "price": 1171,
+                "icon": "inspection-panel"
+            },
+            {
+                "name": "Workers",
+                "price": 2650,
+                "icon": "hard-hat"
+            },
+            {
+                "name": "Wood",
+                "price": 324,
+                "icon": "axe"
+            },
+            {
+                "name": "Concrete",
+                "price": 47,
+                "icon": "weight"
+            }
+        ],
+        "constructions": [
+            {
+                "name": "Private House",
+                "materials": [
+                    {
+                        "name": "Metal",
+                        "amount": 4,
+                        "icon": "inspection-panel"
+                    },
+                    {
+                        "name": "Workers",
+                        "amount": 4,
+                        "icon": "hard-hat"
+                    },
+                    {
+                        "name": "Wood",
+                        "amount": 50,
+                        "icon": "axe"
+                    },
+                    {
+                        "name": "Concrete",
+                        "amount": 170,
+                        "icon": "weight"
+                    }
+                ],
+                "time": 10800000,
+                "price": 59200,
+                "level": 0,
+                "previous": 0
+            },
+            {
+                "name": "Office Building",
+                "materials": [
+                    {
+                        "name": "Metal",
+                        "amount": 12,
+                        "icon": "inspection-panel"
+                    },
+                    {
+                        "name": "Workers",
+                        "amount": 13,
+                        "icon": "hard-hat"
+                    },
+                    {
+                        "name": "Wood",
+                        "amount": 400,
+                        "icon": "axe"
+                    },
+                    {
+                        "name": "Concrete",
+                        "amount": 1500,
+                        "icon": "weight"
+                    }
+                ],
+                "time": 36000000,
+                "price": 385300,
+                "level": 1,
+                "previous": 2
+            },
+            {
+                "name": "Shopping Centre",
+                "materials": [
+                    {
+                        "name": "Metal",
+                        "amount": 25,
+                        "icon": "inspection-panel"
+                    },
+                    {
+                        "name": "Workers",
+                        "amount": 90,
+                        "icon": "hard-hat"
+                    },
+                    {
+                        "name": "Wood",
+                        "amount": 300,
+                        "icon": "axe"
+                    },
+                    {
+                        "name": "Concrete",
+                        "amount": 3800,
+                        "icon": "weight"
+                    }
+                ],
+                "time": 43200000,
+                "price": 644130,
+                "level": 2,
+                "previous": 4
             }
         ]
     }

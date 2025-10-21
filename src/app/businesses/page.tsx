@@ -9,6 +9,7 @@ import { CreateBusinessModal } from '@/components/CreateBusinessModal';
 import { BusinessInfoModal } from '@/components/BusinessInfoModal';
 import { BusinessStatCard } from '@/components/BusinessStatCard';
 import { formatCurrency } from '@/utils/currency';
+import { BusinessIncomeCard } from '@/components/BusinessIncomeCard';
 
 export default function BusinessesPage() {
     const { businessData, businesses, calculateAllIncomePerHour, getBestBusiness } = useContext(BusinessContext);
@@ -194,14 +195,7 @@ export default function BusinessesPage() {
                                 </div>
 
                                 {/* Income */}
-                                <div className="border-t border-border pt-4">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-sm text-tertiary">Income per Hour</span>
-                                        <span className="text-xl font-bold text-primary">
-                                            {formatCurrency(business.calculateIncomePerHour())}
-                                        </span>
-                                    </div>
-                                </div>
+                                <BusinessIncomeCard business={business} />
 
                                 {/* Hover effect */}
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>

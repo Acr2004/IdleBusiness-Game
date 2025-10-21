@@ -16,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     setXpProgress(((xp - xpPreviousLevel) / (xpToNextLevel - xpPreviousLevel) * 100).toFixed(2));
-  }, [xp, level]);
+  }, [xp, level, xpPreviousLevel, xpToNextLevel]);
 
   return (
     <div className='w-full overflow-scroll h-screen bg-background'>
