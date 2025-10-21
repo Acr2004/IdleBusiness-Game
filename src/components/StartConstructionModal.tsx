@@ -122,7 +122,7 @@ export function StartConstructionModal({ business, materials, constructions, for
                                         Start
                                     </button>
                                 ) : (
-                                    <p className="text-center text-sm font-semibold text-secondary mt-4">You need to build <span className="text-primary">{construction.previous - previousSold} more {constructions[index - 1].name}</span> to build this.</p>
+                                    <p className="text-center text-sm font-semibold text-secondary mt-4">You need to sell <span className="text-primary">{construction.previous - previousSold} more {constructions[index - 1].name}{construction.previous - previousSold > 1 ? "s" : ""}</span> to build this.</p>
                                 )}
                             </div>
                         );
